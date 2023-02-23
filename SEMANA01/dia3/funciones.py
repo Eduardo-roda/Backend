@@ -42,3 +42,4 @@ def calculadora(**kwargs):
     return resultado
 
 print(calculadora(n1=5,n2=2,ope='suma'))
+
