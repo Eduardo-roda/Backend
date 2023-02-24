@@ -20,6 +20,7 @@ def mostrar_alumnos():
     for alumno in listAlumnos:
         tree.insert('',END,alumno[0],values=(alumno[1],alumno[2]))
 
+
 def nuevo_alumno():
     
     def guardar():
@@ -48,8 +49,13 @@ def nuevo_alumno():
     top.mainloop()
 
 def eliminar_alumno():
-    pass
+    id = tree.selection()[0]
+    #print(id)
+    c.execute("delete from alumnos where id = ?",(id,))
+    conn.commit()
+    mostrar_alumnos()
 
+#Creacion de la Consola
 app = Tk()
 app.title('Crud de Alumnos')
 
