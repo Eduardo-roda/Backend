@@ -65,7 +65,19 @@ class Ladrillo(pygame.sprite.Sprite):
         self.rect.topleft = posicion
 
 class Muro(pygame.sprite.Group):
-    pass
+    def __init__(self, cantidadLadrillos):
+        pygame.sprite.Group.__init__(self)
+
+        pos_x = 0
+        pos_y = 20
+        for i in range(cantidadLadrillos):
+            ladrillo = Ladrillo((pos_x,pos_y))
+            self.add(ladrillo)
+
+            pos_x += ladrillo.rect.width
+            if pos_x >= ANCHO:
+                pos_x = 0
+                pos_y += ladrillo.rect.height
 
 
 pantalla = pygame.display.set_mode((ANCHO,ALTO))
@@ -80,7 +92,8 @@ pygame.key.set_repeat(30)
 #CREAMOS LOS OBJETOS DEL VIDEOJUEGO
 bolita = Bolita()
 jugador = Paleta()
-ladrillo = Ladrillo((0,0))
+#ladrillo = Ladrillo((0,0))
+muro = Muro(50)
 
 while True:
     #Establecer el tiempo del relojs
@@ -96,13 +109,25 @@ while True:
     #Movemos la bolita
     bolita.update()
 
+
+    ##################################### COLISIONES #########################################
+    #Colisión entre bolita y jugador 
+    if pygame.sprite.collide_rect(bolita,jugador):
+        bolita.speed[1] = -bolita.speed[1]
+
+
     #Pintamos la pantalla
     pantalla.fill(FONDO)
     #Dibijar la bolita en la pantalla
     pantalla.blit(bolita.image,bolita.rect)
     #Dibujar al jugador en la pantalla
     pantalla.blit(jugador.image,jugador.rect)
-    #Actualizar los elementos en la pantalla
+    #dibujamos el muroo
+    muro.draw(pantalla)
 
-    pantalla.blit(ladrillo.image,ladrillo.rect)
+    #Actualizar los elementos en la pantalla
     pygame.display.flip()
+    
+
+    #pantalla.blit(ladrillo.image,ladrillo.rect)
+    
