@@ -1,9 +1,12 @@
 import pygame
 import sys
+import time
 
 ANCHO = 640 
 ALTO = 480
 FONDO = (0,0,64)
+
+pygame.init()
 
 ### CREAMOS LOS OBJETOS DEL VIDEOJUEGO
 
@@ -23,7 +26,8 @@ class Bolita(pygame.sprite.Sprite):
 
     def update(self):
         #Verificar si la bolita se sale de pamtalla
-        if self.rect.bottom >= ALTO or self.rect.top <= 0:
+        #if self.rect.bottom >= ALTO or self.rect.top <= 0:
+        if self.rect.top <= 0:
             self.speed[1] = -self.speed[1]
         elif self.rect.right >= ANCHO or self.rect.left <= 0:
             self.speed[0] = -self.speed[0]
@@ -79,7 +83,21 @@ class Muro(pygame.sprite.Group):
                 pos_x = 0
                 pos_y += ladrillo.rect.height
 
+                
+########################### FUNCIONES PARA ETAPAS DEL JUEGO
 
+def juego_terminado():
+    fuente = pygame.font.SysFont('Arial',72)
+    texto = fuente.render('GAME OVER',True,(255,255,255))
+    texto_rect = texto.get_rect()
+    texto_rect.center = [ANCHO /2, ALTO/2]
+    pantalla.blit(texto,texto_rect)
+    pygame.display.flip()
+    #pausar por 3s
+    time.sleep(3)
+    sys.exit()
+                
+                                
 pantalla = pygame.display.set_mode((ANCHO,ALTO))
 
 pygame.display.set_caption('Juego de python de  Codigo G19')
@@ -115,7 +133,20 @@ while True:
     if pygame.sprite.collide_rect(bolita,jugador):
         bolita.speed[1] = -bolita.speed[1]
 
+    #Colisión de la bolita con el muro
+    lista = pygame.sprite.spritecollide(bolita,muro,False)
+    if lista:
+        ladrillo = lista[0]
+        cx = bolita.rect.centerx
+        if cx < ladrillo.rect.left or cx >ladrillo.rect.right:
+            bolita.speed[0] = -bolita.speed[0]
+        else:
+            bolita.speed[1] = -bolita.speed[1]
+        muro.remove(ladrillo)
 
+    #revisar si la bolita sale de la pantalla
+    if bolita.rect.top > ALTO:
+        juego_terminado()
     #Pintamos la pantalla
     pantalla.fill(FONDO)
     #Dibijar la bolita en la pantalla
