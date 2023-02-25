@@ -96,7 +96,16 @@ def juego_terminado():
     #pausar por 3s
     time.sleep(3)
     pygame.mixer.Sound.play(sonido_game_over)
+    time.sleep(5)
+
     sys.exit()
+
+def mostrar_puntuacion():
+    fuente = pygame.font.SysFont('Consolas', 20)
+    texto = fuente.render(str(puntuacion).zfill(5),True,(255,255,255))
+    texto_rect = texto.get_rect()
+    texto_rect.topleft = [0,0]
+    pantalla.blit(texto,texto_rect)
                 
                                 
 pantalla = pygame.display.set_mode((ANCHO,ALTO))
@@ -112,7 +121,8 @@ pygame.key.set_repeat(30)
 bolita = Bolita()
 jugador = Paleta()
 #ladrillo = Ladrillo((0,0))
-muro = Muro(50)
+muro = Muro(64)
+puntuacion = 0
 
 #CARGA DE SONIDOS DEL VIDEOJUEGO
 sonido_colision = pygame.mixer.Sound('sonidos/colision.ogg')
@@ -145,12 +155,13 @@ while True:
     if lista:
         ladrillo = lista[0]
         cx = bolita.rect.centerx
-        if cx < ladrillo.rect.left or cx >ladrillo.rect.right:
+        if cx < ladrillo.rect.left or cx > ladrillo.rect.right:
             bolita.speed[0] = -bolita.speed[0]
         else:
             bolita.speed[1] = -bolita.speed[1]
         muro.remove(ladrillo)
         pygame.mixer.Sound.play(sonido_colision_muro)
+        puntuacion += 10
 
     #revisar si la bolita sale de la pantalla
     if bolita.rect.top > ALTO:
@@ -158,6 +169,8 @@ while True:
         
     #Pintamos la pantalla
     pantalla.fill(FONDO)
+    #Mostramos puntuación
+    mostrar_puntuacion()
     #Dibijar la bolita en la pantalla
     pantalla.blit(bolita.image,bolita.rect)
     #Dibujar al jugador en la pantalla
