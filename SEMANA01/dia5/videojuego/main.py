@@ -84,7 +84,7 @@ class Muro(pygame.sprite.Group):
                 pos_y += ladrillo.rect.height
 
                 
-########################### FUNCIONES PARA ETAPAS DEL JUEGO
+########################### FUNCIONES PARA ETAPAS DEL JUEGO #########################################
 
 def juego_terminado():
     fuente = pygame.font.SysFont('Arial',72)
@@ -95,6 +95,7 @@ def juego_terminado():
     pygame.display.flip()
     #pausar por 3s
     time.sleep(3)
+    pygame.mixer.Sound.play(sonido_game_over)
     sys.exit()
                 
                                 
@@ -113,6 +114,12 @@ jugador = Paleta()
 #ladrillo = Ladrillo((0,0))
 muro = Muro(50)
 
+#CARGA DE SONIDOS DEL VIDEOJUEGO
+sonido_colision = pygame.mixer.Sound('sonidos/colision.ogg')
+sonido_colision_muro = pygame.mixer.Sound('sonidos/colision_muro.ogg')
+sonido_game_over = pygame.mixer.Sound('sonidos/game_over.ogg')
+#CARGA DE SONIDOS DEL VIDEOJUEGO
+
 while True:
     #Establecer el tiempo del relojs
     reloj.tick(60)
@@ -127,11 +134,11 @@ while True:
     #Movemos la bolita
     bolita.update()
 
-
-    ##################################### COLISIONES #########################################
+    ######################################## COLISIONES ###############################################
     #Colisión entre bolita y jugador 
     if pygame.sprite.collide_rect(bolita,jugador):
         bolita.speed[1] = -bolita.speed[1]
+        pygame.mixer.Sound.play(sonido_colision)
 
     #Colisión de la bolita con el muro
     lista = pygame.sprite.spritecollide(bolita,muro,False)
@@ -143,10 +150,12 @@ while True:
         else:
             bolita.speed[1] = -bolita.speed[1]
         muro.remove(ladrillo)
+        pygame.mixer.Sound.play(sonido_colision_muro)
 
     #revisar si la bolita sale de la pantalla
     if bolita.rect.top > ALTO:
         juego_terminado()
+        
     #Pintamos la pantalla
     pantalla.fill(FONDO)
     #Dibijar la bolita en la pantalla
