@@ -23,4 +23,21 @@ def resta(n1=0,n2=0):
     resultado = n1 - n2 
     return '<h1>La resta de {} - {} es {} </h1>'.format(n1,n2,resultado)
 
+@app.route('/calculadora',methods=['GET','POST'])
+def calculadora():
+    form = """
+            <form action='calculadora' method='POST'>
+            <input type='text' name='n1' size='2'>
+            + <input type='text' name='n2' size='2'>
+            <input type='submit' value='=' />
+            </form>
+            """
+    
+    if request.method == 'POST':
+        n1 = request.form['n1']
+        n2 = request.form['n2']
+        resultado = int(n1) + int(n2)
+        form += '<h1>la suma de {} + {} es {}</h1>'.format(n1,n2,resultado)
+    return form
+
 app.run(debug=True)
