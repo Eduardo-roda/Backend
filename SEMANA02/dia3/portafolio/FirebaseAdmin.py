@@ -21,3 +21,4 @@ class FirebaseAdmin:
     
 fs = FirebaseAdmin()
 lista = fs.getCollection('proyectos')
+print(lista)
