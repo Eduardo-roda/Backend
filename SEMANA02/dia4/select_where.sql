@@ -13,7 +13,7 @@ WHERE pais NOT IN ('Peru');
 SELECT nombre,email,pais,nota FROM alumno
 WHERE nombre like 'A%';
 SELECT nombre,email,pais from alumno
-WHERE email like '%@gmail.com';
+WHERE email like '%@myspace.com';
 --SELECT DISTINCT SUBSTR(email,POSITION('@' in email),LENGTH(email)) FROM alumno LIMIT 10;
 SELECT DISTINCT SUBSTR(email,POSITION('@' in email) + 1,LENGTH(email) - POSITION('@' in email)) FROM alumno LIMIT 10;
 
