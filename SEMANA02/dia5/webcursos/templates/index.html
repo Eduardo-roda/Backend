@@ -11,27 +11,36 @@
     <title>REPORTE DE CURSOS</title>
   </head>
   <body>
+    
     <div class="container">
         <div class="row">
           <div class="col-w1">
             
           </div>
-          <div class="col-xl">
+          <div class="col">
             <center><h1>REPORTE DE CURSOS</h1></center>
             <table class="table">
                 <thead class="thead-dark">
                   <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Alumno</th>
-                    <th scope="col">HTML Y CSS</th>
+                    {% for curso in cursos %}
+                      <th scope="col">{{curso[1]}}</th>
+                    {% endfor %}
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                  </tr>
+                  
+                    {% for nota in notas %}
+                    <tr>
+                      <th scope="row">{{nota[0]}}</th>
+                      <td>{{nota[1]}}</td>
+                      <td>{{nota[2]}}</td>
+                      <td>{{nota[3]}}</td>
+                      <td>{{nota[4]}}</td>
+                      <td>{{nota[5]}}</td>
+                      <td>{{nota[6]}}</td>
+                    </tr>
+                    {% endfor %}
                   
                 </tbody>
               </table>
@@ -43,7 +52,6 @@
           </div>
         </div>
       </div>
-
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
