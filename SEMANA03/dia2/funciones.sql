@@ -9,7 +9,8 @@ BEGIN
 
     SELECT COUNT(*) INTO total
     FROM tbl_matricula_curso mc 
-    INNER JOIN tbl_matricula m ON mc.matricula_id = m.matricula_id
+    INNER JOIN tbl_matricula m 
+    ON mc.matricula_id = m.matricula_id
     WHERE m.alumno_id = alumnoId;
 
     RETURN total;
