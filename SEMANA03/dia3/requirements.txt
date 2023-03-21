@@ -1,0 +1,7 @@
+#framework principal
+flask
+
+#extensiones de flask
+
+#librerias
+mysql-connector-python
