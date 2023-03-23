@@ -5,6 +5,10 @@ from . import admin
 #importamos connDb para mysql
 from app import dbConn
 
+def getSqlCatalogo(tblCatalogo):
+    strSqlCatalogo = "select " + tblCatalogo + "_id as id," + tblCatalogo + "_descripcion as descripcion from tbl_" + tblCatalogo
+    return strSqlCatalogo
+
 @admin.route('/')
 def index():
     return render_template('admin/index.html')
@@ -13,9 +17,9 @@ def index():
 def categoria():
     #lista de categorias
     cursor = dbConn.cursor(dictionary=True)
-    cursor.execute('select categoria_id as id,categoria_descripcion as descripcion from tbl_categoria' )
+    sqlgetData = getSqlCatalogo('categoria')
+    cursor.execute(sqlgetData)
     data = cursor.fetchall()
-    print(data)
     cursor.close()
 
     context = {
@@ -29,7 +33,17 @@ def modalidad():
 
 @admin.route('/jornada')
 def jornada():
-    return render_template('admin/jornada.html')
+     #lista de jornadas
+    cursor = dbConn.cursor(dictionary=True)
+    cursor.execute('select jornada_id as id,jornada_descripcion as descripcion from tbl_jornada' )
+    data = cursor.fetchall()
+    print(data)
+    cursor.close()
+
+    context = {
+        'jornadas':data
+    }
+    return render_template('admin/jornada.html',**context)
 
 @admin.route('/empresa')
 def empresa():
