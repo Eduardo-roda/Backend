@@ -2,13 +2,26 @@ from flask import Flask,render_template,request
 
 from . import admin
 
+#importamos connDb para mysql
+from app import dbConn
+
 @admin.route('/')
 def index():
     return render_template('admin/index.html')
 
 @admin.route('/categoria')
 def categoria():
-    return render_template('admin/categoria.html')
+    #lista de categorias
+    cursor = dbConn.cursor(dictionary=True)
+    cursor.execute('select categoria_id as id,categoria_descripcion as descripcion from tbl_categoria' )
+    data = cursor.fetchall()
+    print(data)
+    cursor.close()
+
+    context = {
+        'categorias':data
+    }
+    return render_template('admin/categoria.html',**context)
 
 @admin.route('/modalidad')
 def modalidad():

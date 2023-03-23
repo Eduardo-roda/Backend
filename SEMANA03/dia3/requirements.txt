@@ -5,3 +5,4 @@ flask
 
 #librerias
 mysql-connector-python
+sudo pip install mysql-connector
