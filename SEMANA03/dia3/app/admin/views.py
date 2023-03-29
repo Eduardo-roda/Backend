@@ -35,7 +35,8 @@ def modalidad():
 def jornada():
      #lista de jornadas
     cursor = dbConn.cursor(dictionary=True)
-    cursor.execute('select jornada_id as id,jornada_descripcion as descripcion from tbl_jornada' )
+    sqlgetData = getSqlCatalogo('jornada')
+    cursor.execute(sqlgetData)
     data = cursor.fetchall()
     print(data)
     cursor.close()
