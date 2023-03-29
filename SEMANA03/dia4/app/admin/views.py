@@ -55,15 +55,27 @@ def categoria():
     }
     return render_template('admin/categoria.html',**context)
 
-@admin.route('/modalidad')
+@admin.route('/modalidad',methods=['GET','POST'])
 def modalidad():
+
+    modalidadForm = CatalogoForm()
+
+    if(modalidadForm.validate_on_submit()):
+        descripcion = modalidadForm.descripcion.data
+        cursorInsert = dbConn.cursor()
+        strSqlInsert = setSqlCatalogo('modalidad',descripcion)
+        cursorInsert.execute(strSqlInsert)
+        dbConn.commit()
+        cursorInsert.close()
+
     cursor = dbConn.cursor(dictionary=True)
     sqlgetData = getSqlCatalogo('modalidad')
     cursor.execute(sqlgetData)
     data = cursor.fetchall()
     cursor.close()
     context = {
-        'modalidades':data
+        'modalidades':data,
+        'form': modalidadForm
     }
     
     return render_template('admin/modalidad.html',**context)
