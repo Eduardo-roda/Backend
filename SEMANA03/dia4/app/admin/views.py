@@ -5,17 +5,43 @@ from . import admin
 #importamos connDb para mysql
 from app import dbConn
 
+#importamos formularios
+from .forms import CatalogoForm
+
 def getSqlCatalogo(tblCatalogo):
     strSqlCatalogo = "select " + tblCatalogo + "_id as id," + tblCatalogo + "_descripcion as descripcion from tbl_" + tblCatalogo
     return strSqlCatalogo
+
+def setSqlCatalogo(tblCatalogo,strDescripcion):
+    strSqlInsertCatalogo = "insert into tbl_" + tblCatalogo 
+    strSqlInsertCatalogo += "(" + tblCatalogo + "_descripcion) "
+    strSqlInsertCatalogo += "values ('"+ strDescripcion +"');"
+
+    return strSqlInsertCatalogo
 
 @admin.route('/')
 def index():
     
     return render_template('admin/index.html')
 
-@admin.route('/categoria')
+@admin.route('/categoria',methods=['GET','POST'])
 def categoria():
+
+    #crear formulario de nueva categoria
+    categoriaForm = CatalogoForm()
+
+    #Validamos si se envio el formulario para registrar nueva categoria
+    if categoriaForm.validate_on_submit():
+        #registramos la nueva categoria
+        descripcion = categoriaForm.descripcion.data
+        cursorInsert = dbConn.cursor()
+        strSqlInsert = setSqlCatalogo('categoria',descripcion)
+        cursorInsert.execute(strSqlInsert)
+        dbConn.commit()
+        cursorInsert.close()
+
+    print(categoriaForm)
+
     #lista de categorias
     cursor = dbConn.cursor(dictionary=True)
     sqlgetData = getSqlCatalogo('categoria')
@@ -24,7 +50,8 @@ def categoria():
     cursor.close()
     
     context = {
-        'categorias':data
+        'categorias':data,
+        'form' : categoriaForm 
     }
     return render_template('admin/categoria.html',**context)
 
