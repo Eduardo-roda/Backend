@@ -2,6 +2,8 @@
 flask
 
 #extensiones de flask
+Flask-WTF
+Bootstrap-Flask
 
 #librerias
 mysql-connector-python
