@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,jsonify
 
 from . import admin
 
@@ -54,6 +54,32 @@ def categoria():
         'form' : categoriaForm 
     }
     return render_template('admin/categoria.html',**context)
+
+@admin.route('/ajaxCategoria',methods=['POST'])
+def ajaxCategoria():
+
+    accion = request.form['action']
+    id = request.form['id']
+    print(accion)
+    if(accion == "edit"):
+        #ediatar el registro
+        descripcion = request.form['descripcion']
+        cursor = dbConn.cursor()
+        cursor.execute("update tbl_categoria set categoria_descripcion = '"+descripcion+"' where categoria_id = '"+id+"'")
+        dbConn.commit()
+        cursor.close()
+
+    elif(accion == "delete"):
+        #eliminar
+        cursor = dbConn.cursor()
+        cursor.execute("delete from tbl_categoria where categoria_id = '"+id+"'")
+        dbConn.commit()
+        cursor.close()
+
+    context = {
+        'status':True
+    }
+    return jsonify(context)
 
 @admin.route('/modalidad',methods=['GET','POST'])
 def modalidad():
