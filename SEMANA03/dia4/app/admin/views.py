@@ -106,6 +106,33 @@ def modalidad():
     
     return render_template('admin/modalidad.html',**context)
 
+@admin.route('/ajaxModalidad',methods=['POST'])
+def ajaxModalidad():
+
+    accion = request.form['action']
+    id = request.form['id']
+    print(accion)
+    if(accion == "edit"):
+        #ediatar el registro
+        descripcion = request.form['descripcion']
+        cursor = dbConn.cursor()
+        cursor.execute("update tbl_modalidad set modalidad_descripcion = '"+descripcion+"' where modalidad_id = '"+id+"'")
+        dbConn.commit()
+        cursor.close()
+
+    elif(accion == "delete"):
+        #eliminar
+        cursor = dbConn.cursor()
+        cursor.execute("delete from tbl_modalidad where modalidad_id = '"+id+"'")
+        dbConn.commit()
+        cursor.close()
+
+    context = {
+        'status':True
+    }
+    return jsonify(context)
+
+
 @admin.route('/jornada',methods=['GET','POST'])
 def jornada():
 
