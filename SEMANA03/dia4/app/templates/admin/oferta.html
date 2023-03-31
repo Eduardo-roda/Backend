@@ -1,4 +1,5 @@
 {% extends 'admin/layout.html' %}
+{% from 'bootstrap4/form.html' import render_form %}
 {% block content %}
 <h1 class="mt-4">OFERTAS LABORALES</h1>
 <ol class="breadcrumb mb-4">
@@ -8,9 +9,19 @@
 <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
+        Opciones
+    </div>
+    <div class="card-body">
+        <a href="/admin/nuevaoferta" class="btn btn-primary">Nueva Oferta</a>
+    </div>
+</div>
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
         Oferta
     </div>
     <div class="card-body">
+        {{macros.mostrar_tabla_catalogo(oferta)}}
     </div>
 </div>
 {% endblock %}
